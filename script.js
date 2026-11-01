@@ -7,6 +7,19 @@ const projects = [
   { number: '06', category: 'NETWORK SECURITY', title: 'Basic Network Traffic Analysis', description: 'A controlled lab exercise using Wireshark to observe packet information, IP addresses, protocols, and communication patterns.', tags: ['Wireshark', 'Packet analysis', 'Networking fundamentals'] }
 ];
 
+// All static files are stored beside index.html in the GitHub Pages root.
+// Using document.baseURI also works when the repository is hosted under a project path.
+const assetPath = fileName => new URL(fileName, document.baseURI).href;
+const certificateFiles = [
+  'certificate-1.jpg',
+  'certificate-2.jpg',
+  'certificate-3.jpg',
+  'certificate-4.jpg',
+  'certificate-5.jpg',
+  'certificate-6.jpg',
+  'certificate-7.jpg'
+];
+
 const grid = document.querySelector('#projects-grid');
 const modal = document.querySelector('#project-modal');
 const modalTitle = document.querySelector('#modal-title');
@@ -65,9 +78,17 @@ document.querySelector('#contact-form').addEventListener('submit', event => {
 
 const profile = document.querySelector('.avatar-placeholder');
 const profileImage = new Image();
-profileImage.src = 'assets/sabiha-profile.png';
+profileImage.src = assetPath('sabiha-profile.png');
 profileImage.alt = 'Portrait of Sabiha Sultana Surborna';
-profileImage.onload = () => { profile.replaceChildren(profileImage); };
+profileImage.onload = () => { profile?.replaceChildren(profileImage); };
+
+// Normalize image paths in case the HTML was copied from the previous assets/ structure.
+const universityLogo = document.querySelector('.uni-mark img');
+if (universityLogo) universityLogo.src = assetPath('aiub-logo.png');
+
+document.querySelectorAll('.certificate-card img').forEach((image, index) => {
+  if (certificateFiles[index]) image.src = assetPath(certificateFiles[index]);
+});
 
 // Keep the scholarship certificates clearly identified in the gallery.
 const certificateCards = document.querySelectorAll('.certificate-card');
